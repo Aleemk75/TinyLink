@@ -26,13 +26,17 @@
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
      position: relative;
       display: flex;
-      /* justify-content:space-evenly; */
+      /* justify-content:center; */
       align-items: center;
-      max-height: 65px;
+      max-height: 50px;
+      text-align: center;
     }
  .navbar p{
       position:relative;
-      left: 35%;
+      left: 40%;
+      font-size: 45px;
+      /* text-align: center; */
+      margin-top: 40px;
     }
     /* 📦 Main Content */
     .main-container {
@@ -177,7 +181,10 @@ position: absolute;
 left: 50px;
     } */
 
-   
+   .text{
+  color: #ff4e50;
+  font-size: 17px;
+   }
   </style>
 </head>
 
@@ -188,10 +195,9 @@ left: 50px;
     <form action="/" method="GET">
       <button>home</button>
     </form>
-    <p>URL Shortener</p>
+    <p>URLite</p>
    
   </div>
-
   <!-- 📦 Main Content -->
   <div class="main-container">
     <div class="content-box">
@@ -201,16 +207,20 @@ left: 50px;
         <button type="submit">Get your short link</button>
       </form>
 
+  
       <% if (shortUrl) { %>
         <div class="short-url-box">
           <input type="text" id="shortUrlInput" value="<%= shortUrl %>" readonly />
           <button onclick="copyShortUrl()">Copy</button>
         </div>
+      <% } else { %>
+        <p class="text">URLite is a free tool to shorten URLs and generate short links</p>
       <% } %>
-
       <% if (error) { %>
         <p style="color: red;"><%= error %></p>
       <% } %>
+    
+        
     </div>
   </div>
 

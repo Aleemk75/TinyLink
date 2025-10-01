@@ -65,6 +65,7 @@ export async function redirectUrl(req, res, next) {
         const checkUrlinCache = await redisClient.get(shortId);
         if (checkUrlinCache) {
             let cachedUrl = JSON.parse(checkUrlinCache);
+            console.log("After Redis");
             console.timeEnd("RedirectTime"); // ⏱ end timer
             return res.redirect(cachedUrl.longUrl);
         } else {
@@ -76,6 +77,7 @@ export async function redirectUrl(req, res, next) {
                 EX: 60 * 60 * 24 * 2,
             });
 
+            console.log("Before Redis");
             console.timeEnd("RedirectTime"); // ⏱ end timer
             res.redirect(urls.longUrl);
         }
