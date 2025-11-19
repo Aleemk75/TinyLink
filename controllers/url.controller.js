@@ -2,7 +2,7 @@ import redisClient from "../cache/radis.js";
 import Url from "../models/url.schema.js";
 import { shortCode } from "../utils/shortid.js";
 import { validUrlRegex } from "../utils/regex.js";
-import mongoose from "mongoose";  
+import mongoose from "mongoose";
 
 // Helper function to safely parse Redis data
 // Upstash Redis may return objects directly or JSON strings
@@ -79,7 +79,7 @@ export async function handleNcreateurl(req, res) {
         const { url, customCode } = req.body;
         // console.log("Create URL - URL:", url, "Custom Code:", customCode);
 
-      
+
         if (!url) {
             return res.status(400).json({
                 error: "URL is required!"
@@ -88,6 +88,14 @@ export async function handleNcreateurl(req, res) {
 
         // Sanitize URL - reject suspicious patterns
         const suspiciousPatterns = [
+               /paypal/i,
+    /login/i,
+    /verify/i,
+    /account/i,
+    /secure/i,
+    /bank/i,
+    /password/i,
+    /update.*payment/i,
             /javascript:/i,
             /data:/i,
             /onclick/i,
@@ -95,7 +103,7 @@ export async function handleNcreateurl(req, res) {
             /<script/i,
             /eval\(/i
         ];
-        
+
         for (const pattern of suspiciousPatterns) {
             if (pattern.test(url)) {
                 return res.status(400).json({
@@ -116,7 +124,7 @@ export async function handleNcreateurl(req, res) {
         if (customCode && customCode.trim()) {
             code = customCode.trim();
 
-    
+
             const codeRegex = /^[A-Za-z0-9]{6,8}$/;
             if (!codeRegex.test(code)) {
                 return res.status(400).json({
@@ -251,7 +259,7 @@ export async function redirectUrl(req, res) {
 // GET: List all links (API)
 export async function getAllLinks(req, res) {
     try {
-        
+
         const allLinks = await Url.find({}).sort({ createdAt: -1 });
 
         // Format response
@@ -332,7 +340,7 @@ export async function healthCheck(req, res) {
     try {
         // Check MongoDB connection
         // console.log(mongoose.connection.readyState);
-        
+
         const dbStatus = mongoose.connection.readyState === 1 ? 'connected' : 'disconnected';
 
         // Check Redis connection
