@@ -167,23 +167,25 @@
     <script>
         function copyToClipboard(text, btn) {
             navigator.clipboard.writeText(text).then(() => {
-                const originalText = btn.textContent;
-                btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
-                btn.classList.add('bg-green-200', 'text-green-700');
-                btn.classList.remove('bg-slate-100', 'hover:bg-slate-200', 'text-slate-700');
+                btn.innerHTML = '<i class="fas fa-check"></i>';
+                btn.classList.add('bg-green-100', 'text-green-600');
                 setTimeout(() => {
-                    btn.textContent = originalText;
-                    btn.classList.remove('bg-green-200', 'text-green-700');
-                    btn.classList.add('bg-slate-100', 'hover:bg-slate-200', 'text-slate-700');
+                    btn.innerHTML = '<i class="fas fa-copy"></i>';
+                    btn.classList.remove('bg-green-100', 'text-green-600');
                 }, 2000);
-            }).catch(() => alert('Failed to copy'));
+            });
         }
 
-        function deleteLink(code) {
-            if (!confirm(`Delete link "${code}"? This action cannot be undone.`)) return;
-            fetch(`/api/links/${code}`, { method: 'DELETE' })
-                .then(res => res.ok ? window.location.href = '/' : alert('Failed to delete'))
-                .catch(() => alert('Error deleting link'));
+        async function deleteLink(code) {
+            if (!confirm(`Delete link "${code}"?`)) return;
+
+            try {
+                const response = await fetch(`/api/links/${code}`, { method: 'DELETE' });
+                if (response.ok) window.location.href = '/';
+                else throw new Error('Failed to delete');
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
         }
 
         function checkHealth() {
@@ -196,6 +198,34 @@
                     alert(`❌ Health Check Failed:\n\n${error.message}`);
                 });
         }
+
+        // Auto-refresh stats every 2 seconds
+        const code = '<%= link.code %>';
+        setInterval(async () => {
+            try {
+                const response = await fetch(`/api/links/${code}`);
+                if (!response.ok) throw new Error('Link not found');
+                
+                const data = await response.json();
+                
+                document.getElementById('clicksCount').textContent = data.clicks || 0;
+                document.getElementById('lastAccessed').textContent = 
+                    data.lastAccessed ? new Date(data.lastAccessed).toLocaleString() : 'Never';
+                
+                if (data.lastAccessed) {
+                    document.getElementById('lastAccessedBadge').classList.remove('hidden');
+                }
+            } catch (error) {
+                console.log('Link deleted or error fetching stats');
+            }
+        }, 2000);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const alerts = document.querySelectorAll('[id$="Alert"]');
+            alerts.forEach(alert => {
+                setTimeout(() => alert.style.display = 'none', 5000);
+            });
+        });
     </script>
 
 </body>

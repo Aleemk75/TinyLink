@@ -160,7 +160,7 @@
                                 </thead>
                                 <tbody class="divide-y divide-slate-200">
                                     <% links.forEach(link => { %>
-                                        <tr class="hover:bg-slate-50 transition link-card">
+                                        <tr class="hover:bg-slate-50 transition link-card" data-code="<%= link.code %>">
                                             <td class="px-6 py-4">
                                                 <div class="flex items-center gap-2">
                                                     <i class="fas fa-link text-slate-400 text-xs"></i>
@@ -175,16 +175,16 @@
                                             <td class="px-6 py-4">
                                                 <div class="flex items-center gap-2">
                                                     <i class="fas fa-mouse text-slate-400 text-xs"></i>
-                                                    <span class="text-sm font-semibold text-slate-900"><%= link.clicks || 0 %></span>
+                                                    <span class="text-sm font-semibold text-slate-900 clicks-count"><%= link.clicks || 0 %></span>
                                                 </div>
                                             </td>
                                             <td class="px-6 py-4 text-sm text-slate-600">
                                                 <% if (link.lastClicked) { %>
-                                                    <span title="<%= new Date(link.lastClicked).toLocaleString() %>">
+                                                    <span class="last-accessed" title="<%= new Date(link.lastClicked).toLocaleString() %>">
                                                         <%= new Date(link.lastClicked).toLocaleDateString() %>
                                                     </span>
                                                 <% } else { %>
-                                                    <span class="text-slate-400 italic">Never</span>
+                                                    <span class="last-accessed text-slate-400 italic">Never</span>
                                                 <% } %>
                                             </td>
                                             <td class="px-6 py-4 text-sm text-slate-600">
@@ -352,26 +352,50 @@
             }
         }
 
+        function checkHealth() {
+            fetch('/healthz')
+                .then(response => response.json())
+                .then(data => {
+                    alert(`✅ System Status:\n\nStatus: OK\nVersion: ${data.version || '1.0'}\nUptime: ${data.uptime || 'Running'}`);
+                })
+                .catch(error => {
+                    alert(`❌ Health Check Failed:\n\n${error.message}`);
+                });
+        }
+
+        // Auto-refresh dashboard stats every 2 seconds
+        setInterval(async () => {
+            try {
+                const response = await fetch('/api/links');
+                if (!response.ok) throw new Error('Failed to fetch links');
+                
+                const links = await response.json();
+                
+                // Update each row's click count
+                links.forEach(link => {
+                    const clicksElement = document.querySelector(`[data-code="${link.code}"] .clicks-count`);
+                    const dateElement = document.querySelector(`[data-code="${link.code}"] .last-accessed`);
+                    
+                    if (clicksElement) {
+                        clicksElement.textContent = link.clicks || 0;
+                    }
+                    if (dateElement && link.lastAccessed) {
+                        const date = new Date(link.lastAccessed).toLocaleString();
+                        dateElement.textContent = date;
+                    }
+                });
+            } catch (error) {
+                console.log('Error refreshing dashboard stats:', error);
+            }
+        }, 2000);
+
         document.addEventListener('DOMContentLoaded', () => {
             const alerts = document.querySelectorAll('[id$="Alert"]');
             alerts.forEach(alert => {
                 setTimeout(() => alert.style.display = 'none', 5000);
             });
         });
-    
-
-    // Health check function
-    function checkHealth() {
-        fetch('/healthz')
-            .then(response => response.json())
-            .then(data => {
-                alert(`✅ System Status:\n\nStatus: OK\nVersion: ${data.version || '1.0'}\nUptime: ${data.uptime || 'Running'}`);
-            })
-            .catch(error => {
-                alert(`❌ Health Check Failed:\n\n${error.message}`);
-            });
-    }
-</script>
+    </script>
 </body>
 </html>
 </html>

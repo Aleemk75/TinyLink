@@ -60,6 +60,7 @@ export async function statsPage(req, res) {
 
         return res.render("stats", {
             link,
+            code: link.code,
             baseUrl: process.env.BASE_URL || 'http://localhost:8001'
         });
 
