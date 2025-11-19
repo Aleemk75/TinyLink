@@ -4,6 +4,23 @@ A professional URL shortening application similar to Bitly, built with Node.js, 
 
 ---
 
+## ⚠️ Security Notice
+
+This is an educational/portfolio project deployed on free hosting. Some browsers may show security warnings due to:
+- Shared IP addresses on free hosting platforms
+- Google Safe Browsing's conservative approach to URL shorteners
+- Low domain reputation for new deployments
+
+This is a **false positive**. The application:
+- Only shortens user-provided URLs
+- Does not host malicious content
+- Implements input validation
+- Is regularly monitored for security
+
+If you see a warning, you can safely proceed as this is a legitimate portfolio project.
+
+---
+
 ## ✨ Features
 
 ✅ **Create Short Links** - Generate shortened URLs with auto-generated 6-8 alphanumeric codes or custom codes  
