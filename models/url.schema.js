@@ -3,20 +3,24 @@ import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
 let urlSchema = new Schema({
-    shortid: {
+    code: {
         type: String,
         required: true,
         unique: true
     },
-    longUrl: {
+    url: {
         type: String,
         required: true,
     },
-    shortUrl:{
-      type: String,
-      required: true,
+    clicks:{
+        type:Number,
+
+    },
+    lastClicked:{
+        type:Date,
     }
-});
+}, 
+{timestamps:true});
 
 const Url = mongoose.model("Url" , urlSchema);
 

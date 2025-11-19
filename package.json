@@ -5,16 +5,23 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "tailwind": "tailwindcss -i ./public/input.css -o ./public/output.css --watch"
   },
   "author": "AleemKhan",
   "license": "ISC",
   "dependencies": {
+    "@upstash/redis": "^1.35.6",
     "dotenv": "^17.2.2",
     "ejs": "^3.1.10",
     "express": "^5.1.0",
     "mongodb": "^6.20.0",
     "mongoose": "^8.16.4",
     "redis": "^5.6.0"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.22",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.17"
   }
 }

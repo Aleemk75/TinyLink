@@ -1,18 +1,42 @@
-import { createClient } from "redis";
+import { Redis } from '@upstash/redis';
+import 'dotenv/config';
 
-const redisClient =  createClient();
 
-async function connectRedis() {
-    try {
-        await redisClient.connect();
-        console.log("Redis Client Connected");
-    } catch (error) {
-        console.error("Redis Client Connection Error", error);
-    }
-}
-connectRedis(); 
+let redisClient;
+
+try {
+  // Check if Upstash credentials are available
+  if (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) {
+    console.log('🔵 Connecting to Upstash Redis...');
+    
+    redisClient = new Redis({
+      url: process.env.UPSTASH_REDIS_REST_URL,
+      token: process.env.UPSTASH_REDIS_REST_TOKEN,
+    });
+
+    // Test connection
+    redisClient.ping().then(() => {
+      console.log('Upstash Redis connected successfully');
+    }).catch((err) => {
+      console.error(' Upstash Redis connection failed:', err.message);
+    });
+
+  } else {
+    console.warn('Upstash Redis credentials not found');
+    
+  }} catch (error) {
+  console.error('❌ Redis initialization error:', error);
+  
+
+  };
 
 export default redisClient;
 
+
+
+
+
+
+  
 
 

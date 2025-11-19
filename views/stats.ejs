@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Link Stats - TinyLink</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        .stat-card { transition: all 0.2s ease; }
+        .stat-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.08); transform: translateY(-1px); }
+    </style>
+</head>
+<body class="bg-slate-50">
+
+    <div class="flex flex-col h-screen">
+        <!-- Top Navbar -->
+        <div class="bg-white border-b border-slate-200 sticky top-0 z-10 shadow-sm">
+            <div class="px-8 py-4 flex items-center justify-between">
+                <!-- Logo -->
+                <a href="/" class="flex items-center gap-3 hover:opacity-80 transition">
+                    <div class="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-link text-white text-lg"></i>
+                    </div>
+                    <h1 class="text-xl font-bold text-slate-900">TinyLink</h1>
+                </a>
+
+                <!-- Right Side Buttons -->
+                <div class="flex items-center gap-4">
+                    <button onclick="checkHealth()" class="px-4 py-2 text-slate-700 hover:bg-slate-100 rounded-lg transition font-medium">
+                        <i class="fas fa-heartbeat mr-2"></i>Health Check
+                    </button>
+                    <button class="px-6 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition">
+                        Sign Up
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 overflow-auto">
+            <!-- Content Area -->
+            <div class="p-8 max-w-7xl mx-auto w-full">
+                <% if (link) { %>
+                    <!-- Header -->
+                    <div class="mb-8">
+                        <h2 class="text-3xl font-bold text-slate-900 mb-2">Link Statistics</h2>
+                        <p class="text-slate-600">Detailed analytics for your short link</p>
+                    </div>
+
+                    <!-- Stats Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                        <!-- Total Clicks -->
+                        <div class="bg-white rounded-lg p-6 border border-slate-200 stat-card">
+                            <div class="flex items-center justify-between mb-4">
+                                <div>
+                                    <p class="text-slate-600 text-sm font-medium">Total Clicks</p>
+                                    <p class="text-3xl font-bold text-slate-900 mt-2"><%= link.clicks || 0 %></p>
+                                </div>
+                                <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-mouse text-blue-600 text-xl"></i>
+                                </div>
+                            </div>
+                            <p class="text-xs text-slate-500">Cumulative clicks</p>
+                        </div>
+
+                        <!-- Created Date -->
+                        <div class="bg-white rounded-lg p-6 border border-slate-200 stat-card">
+                            <div class="flex items-center justify-between mb-4">
+                                <div>
+                                    <p class="text-slate-600 text-sm font-medium">Created</p>
+                                    <p class="text-lg font-bold text-slate-900 mt-2"><%= new Date(link.createdAt).toLocaleDateString() %></p>
+                                </div>
+                                <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-calendar text-green-600 text-xl"></i>
+                                </div>
+                            </div>
+                            <p class="text-xs text-slate-500"><%= new Date(link.createdAt).toLocaleTimeString() %></p>
+                        </div>
+
+                        <!-- Last Clicked -->
+                        <div class="bg-white rounded-lg p-6 border border-slate-200 stat-card">
+                            <div class="flex items-center justify-between mb-4">
+                                <div>
+                                    <p class="text-slate-600 text-sm font-medium">Last Clicked</p>
+                                    <p class="text-lg font-bold text-slate-900 mt-2">
+                                        <% if (link.lastClicked) { %>
+                                            <%= new Date(link.lastClicked).toLocaleDateString() %>
+                                        <% } else { %>
+                                            Never
+                                        <% } %>
+                                    </p>
+                                </div>
+                                <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-clock text-purple-600 text-xl"></i>
+                                </div>
+                            </div>
+                            <p class="text-xs text-slate-500">
+                                <% if (link.lastClicked) { %>
+                                    <%= new Date(link.lastClicked).toLocaleTimeString() %>
+                                <% } else { %>
+                                    No activity
+                                <% } %>
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Link Details Card -->
+                    <div class="bg-white rounded-lg border border-slate-200 p-6 mb-6">
+                        <h3 class="text-lg font-bold text-slate-900 mb-6">Link Details</h3>
+                        <div class="space-y-4">
+                            <!-- Short Code -->
+                            <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+                                <span class="text-slate-600 font-medium">Short Code</span>
+                                <code class="bg-slate-100 text-slate-900 px-3 py-1 rounded font-mono"><%= link.code %></code>
+                            </div>
+
+                            <!-- Short URL -->
+                            <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+                                <span class="text-slate-600 font-medium">Short URL</span>
+                                <div class="flex items-center gap-2">
+                                    <a href="<%= baseUrl %>/<%= link.code %>" target="_blank" class="text-blue-600 hover:underline break-all"><%= baseUrl %>/<%= link.code %></a>
+                                    <button onclick="copyToClipboard('<%= baseUrl %>/<%= link.code %>', this)" class="px-3 py-1 bg-slate-100 hover:bg-slate-200 rounded text-slate-700 text-sm transition">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Original URL -->
+                            <div class="flex items-center justify-between pb-4">
+                                <span class="text-slate-600 font-medium">Original URL</span>
+                                <a href="<%= link.url %>" target="_blank" class="text-blue-600 hover:underline break-all"><%= link.url %></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Actions Card -->
+                    <div class="bg-white rounded-lg border border-slate-200 p-6">
+                        <h3 class="text-lg font-bold text-slate-900 mb-4">Actions</h3>
+                        <div class="flex gap-3 flex-wrap">
+                            <a href="/" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium">
+                                <i class="fas fa-arrow-left mr-2"></i>Back to Dashboard
+                            </a>
+                            <button onclick="deleteLink('<%= link.code %>')" class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition font-medium">
+                                <i class="fas fa-trash mr-2"></i>Delete Link
+                            </button>
+                        </div>
+                    </div>
+
+                <% } else { %>
+                    <!-- Link Not Found -->
+                    <div class="text-center py-12">
+                        <div class="text-6xl mb-4">🔗</div>
+                        <h2 class="text-3xl font-bold text-slate-900 mb-2">Link Not Found</h2>
+                        <p class="text-slate-600 mb-6">The link you're looking for doesn't exist or has been deleted.</p>
+                        <a href="/" class="inline-block px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium">
+                            <i class="fas fa-arrow-left mr-2"></i>Back to Dashboard
+                        </a>
+                    </div>
+                <% } %>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function copyToClipboard(text, btn) {
+            navigator.clipboard.writeText(text).then(() => {
+                const originalText = btn.textContent;
+                btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                btn.classList.add('bg-green-200', 'text-green-700');
+                btn.classList.remove('bg-slate-100', 'hover:bg-slate-200', 'text-slate-700');
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.classList.remove('bg-green-200', 'text-green-700');
+                    btn.classList.add('bg-slate-100', 'hover:bg-slate-200', 'text-slate-700');
+                }, 2000);
+            }).catch(() => alert('Failed to copy'));
+        }
+
+        function deleteLink(code) {
+            if (!confirm(`Delete link "${code}"? This action cannot be undone.`)) return;
+            fetch(`/api/links/${code}`, { method: 'DELETE' })
+                .then(res => res.ok ? window.location.href = '/' : alert('Failed to delete'))
+                .catch(() => alert('Error deleting link'));
+        }
+
+        function checkHealth() {
+            fetch('/healthz')
+                .then(response => response.json())
+                .then(data => {
+                    alert(`✅ System Status:\n\nStatus: OK\nVersion: ${data.version || '1.0'}\nUptime: ${data.uptime || 'Running'}`);
+                })
+                .catch(error => {
+                    alert(`❌ Health Check Failed:\n\n${error.message}`);
+                });
+        }
+    </script>
+
+</body>
+</html>
