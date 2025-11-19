@@ -86,6 +86,24 @@ export async function handleNcreateurl(req, res) {
             });
         }
 
+        // Sanitize URL - reject suspicious patterns
+        const suspiciousPatterns = [
+            /javascript:/i,
+            /data:/i,
+            /onclick/i,
+            /onerror/i,
+            /<script/i,
+            /eval\(/i
+        ];
+        
+        for (const pattern of suspiciousPatterns) {
+            if (pattern.test(url)) {
+                return res.status(400).json({
+                    error: "Invalid URL format"
+                });
+            }
+        }
+
         if (!validUrlRegex(url)) {
             return res.status(400).json({
                 error: "Invalid URL format"

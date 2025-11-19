@@ -22,6 +22,17 @@ connectdb()
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+// Security headers
+app.use((req, res, next) => {
+    res.setHeader('X-Content-Type-Options', 'nosniff');
+    res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+    res.setHeader('X-XSS-Protection', '1; mode=block');
+    res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+    res.setHeader('Content-Security-Policy', "default-src 'self' https:; script-src 'self' https://cdn.tailwindcss.com 'unsafe-inline'; style-src 'self' https: 'unsafe-inline'; font-src 'self' https:");
+    next();
+});
+
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
