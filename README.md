@@ -48,7 +48,7 @@ The main dashboard where users can create new short links and view all their cre
 - Links table with all metadata (clicks, dates, actions)
 - Responsive design for mobile and desktop
 
-![Dashboard Screenshot](https://via.placeholder.com/1200x600?text=Dashboard+-+Create+and+Manage+Links)
+![alt text](image.png)
 
 ---
 
@@ -61,7 +61,7 @@ After successfully creating a short link, the app displays the generated URL wit
 - Create Another button to generate more links
 - Success notification
 
-![Success Display Screenshot](https://via.placeholder.com/1200x400?text=Success+Display+-+Short+URL+Created)
+![alt text](image-1.png)
 
 ---
 
@@ -77,8 +77,7 @@ Detailed analytics page showing comprehensive stats for each individual short li
 - Delete link option
 - Auto-refresh every 2 seconds (no manual refresh needed)
 
-![Stats Page Screenshot](https://via.placeholder.com/1200x600?text=Statistics+Page+-+Link+Analytics)
-
+![alt text](image-3.png)
 ---
 
 ### 4️⃣ 404 Page - Link Not Found
@@ -91,8 +90,7 @@ Clean and informative 404 page displayed when a link doesn't exist or has been d
 - Create New Link button
 - Helpful information card
 
-![404 Page Screenshot](https://via.placeholder.com/1200x600?text=404+Page+-+Link+Not+Found)
-
+![alt text](image-2.png)
 ---
 
 ### 5️⃣ Navbar & Navigation
@@ -104,8 +102,7 @@ Professional navbar with TinyLink branding and navigation options.
 - Sign Up button for future authentication
 - Responsive design
 
-![Navbar Screenshot](https://via.placeholder.com/1200x100?text=Navbar+-+TinyLink+Logo+and+Navigation)
-
+![alt text](image-5.png)
 ---
 
 ### 6️⃣ Links Table - All Created URLs
@@ -119,8 +116,7 @@ Comprehensive table showing all shortened links with detailed information and ac
 - Created date
 - Actions (Copy, Stats, Delete)
 
-![Links Table Screenshot](https://via.placeholder.com/1200x400?text=Links+Table+-+All+Created+URLs)
-
+![alt text](image-4.png)
 ---
 
 
