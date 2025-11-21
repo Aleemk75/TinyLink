@@ -61,7 +61,7 @@ After successfully creating a short link, the app displays the generated URL wit
 - Create Another button to generate more links
 - Success notification
 
-![alt text](image-1.png)
+![alt text](images/image-1.png)
 
 ---
 
