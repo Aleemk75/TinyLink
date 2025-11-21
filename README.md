@@ -48,7 +48,7 @@ The main dashboard where users can create new short links and view all their cre
 - Links table with all metadata (clicks, dates, actions)
 - Responsive design for mobile and desktop
 
-![alt text](image.png)
+![alt text](images/image.png)
 
 ---
 
@@ -77,7 +77,7 @@ Detailed analytics page showing comprehensive stats for each individual short li
 - Delete link option
 - Auto-refresh every 2 seconds (no manual refresh needed)
 
-![alt text](image-3.png)
+![alt text](images/image-1.png)
 ---
 
 ### 4️⃣ 404 Page - Link Not Found
@@ -90,7 +90,7 @@ Clean and informative 404 page displayed when a link doesn't exist or has been d
 - Create New Link button
 - Helpful information card
 
-![alt text](image-2.png)
+![alt text](images/image-2.png)
 ---
 
 ### 5️⃣ Navbar & Navigation
@@ -102,7 +102,7 @@ Professional navbar with TinyLink branding and navigation options.
 - Sign Up button for future authentication
 - Responsive design
 
-![alt text](image-5.png)
+![alt text](images/image-5.png)
 ---
 
 ### 6️⃣ Links Table - All Created URLs
@@ -116,7 +116,7 @@ Comprehensive table showing all shortened links with detailed information and ac
 - Created date
 - Actions (Copy, Stats, Delete)
 
-![alt text](image-4.png)
+![alt text](images/image-4.png)
 ---
 
 
